@@ -39,9 +39,24 @@
       <iframe class="frame" id="dashboard" title="Dashboard Monitoring" src="https://script.google.com/macros/s/AKfycbykrclS9q-8FdaIWhc_uWUv1q_loAAnwNtL6F8NTBKyXgykcVnoFN4KL7C7_GTku69o/exec" allow="clipboard-read; clipboard-write" referrerpolicy="strict-origin-when-cross-origin"></iframe>
       <section class="error" id="error"><strong>Dashboard belum tampil?</strong><br>Periksa koneksi internet dan pastikan Web App Google Apps Script dapat diakses oleh pengguna yang dituju. Jika halaman Google menampilkan pesan akses atau 401, ubah izin deployment Apps Script sesuai kebijakan organisasi.<br><a href="https://script.google.com/macros/s/AKfycbykrclS9q-8FdaIWhc_uWUv1q_loAAnwNtL6F8NTBKyXgykcVnoFN4KL7C7_GTku69o/exec" target="_blank" rel="noopener">Buka dashboard langsung</a></section>
     </main>
-    <footer class="bottom">Dashboard Monitoring · Google Apps Script</footer>
   </div>
   <script>
+    // Proteksi ringan pada halaman pembungkus (bukan keamanan absolut).
+    // Tidak dapat mencegah DevTools, View Source dari browser/URL, atau akses ke konten iframe lintas domain.
+    document.addEventListener('contextmenu', event => event.preventDefault());
+    document.addEventListener('keydown', event => {
+      const key = (event.key || '').toLowerCase();
+      const ctrlOrCmd = event.ctrlKey || event.metaKey;
+      const blocked =
+        (ctrlOrCmd && ['u', 's', 'p'].includes(key)) ||
+        (ctrlOrCmd && event.shiftKey && ['i', 'j', 'c'].includes(key)) ||
+        key === 'f12';
+      if (blocked) {
+        event.preventDefault();
+        event.stopPropagation();
+      }
+    }, true);
+
     (()=>{
       const frame=document.getElementById('dashboard'),loader=document.getElementById('loader'),status=document.getElementById('status'),error=document.getElementById('error');
       let finished=false;
